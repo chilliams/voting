@@ -1,0 +1,5 @@
+{:require [soy voting.index]
+ ;; must require soy for templates to work correctly
+ :compiler-options {:asset-path "js/main.out"}
+ :init-fns [voting.index/main]
+ :boot-reload {:on-jsload voting.index/main}}

@@ -1,0 +1,53 @@
+{namespace voting.views}
+
+/**
+ * A Winner Is You
+ */
+{template .winner}
+  {@param? winner: string}
+
+  <div class="winner">Winner is {$winner}!</div>
+{/template}
+
+/**
+ * Vote view
+ */
+{template .vote}
+  {@param pair: list<string>}
+  {@param vote: ?}
+  {@param? hasVoted: string}
+
+  {let $isDisabled: $hasVoted /}
+
+  <div class="voting">
+    {foreach $entry in $pair}
+      {let $hasVotedFor: $hasVoted == $entry /}
+      <button key="{$entry}"
+              disabled="{$isDisabled}"
+              onclick="{$vote}">
+        <h1>{$entry}</h1>
+        {if $hasVotedFor}
+          <div class="label">Voted</div>
+        {/if}
+      </button>
+    {/foreach}
+  </div>
+{/template}
+
+/**
+ * Voting view
+ */
+{template .voting}
+  {@param pair: list<string>}
+  {@param vote: ?}
+  {@param? hasVoted: string}
+  {@param? winner: string}
+
+  {if $winner}
+    {call .winner}
+      {param winner: $winner /}
+    {/call}
+  {else}
+    {call .vote data="all" /}
+  {/if}
+{/template}
