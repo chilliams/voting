@@ -6,14 +6,14 @@
 (deftest reducer-test
   (testing "handles SET_ENTRIES"
     (let [initial-state {}
-          action {:type :set-entries :entries ["Trainspotting"]}
+          action {:type "SET_ENTRIES" :entries ["Trainspotting"]}
           next-state (reducer initial-state action)]
       (is (= {:entries ["Trainspotting"]}
              next-state))))
 
   (testing "handles NEXT"
     (let [initial-state {:entries ["Trainspotting" "28 Days Later"]}
-          action {:type :next}
+          action {:type "NEXT"}
           next-state (reducer initial-state action)]
       (is (= {:vote {:pair ["Trainspotting" "28 Days Later"]}
               :entries []}
@@ -22,7 +22,7 @@
   (testing "handles VOTE"
     (let [initial-state {:vote {:pair ["Trainspotting" "28 Days Later"]}
                          :entries []}
-          action {:type :vote :entry "Trainspotting"}
+          action {:type "VOTE" :entry "Trainspotting"}
           next-state (reducer initial-state action)]
       (is (= {:vote {:pair ["Trainspotting" "28 Days Later"]
                      :tally {"Trainspotting" 1}}
@@ -30,17 +30,19 @@
              next-state))))
 
   (testing "has an initial state"
-    (let [action {:type :set-entries :entries ["Trainspotting"]}
+    (let [action {:type "SET_ENTRIES" :entries ["Trainspotting"]}
           next-state (reducer nil action)]
       (is (= {:entries ["Trainspotting"]}
              next-state))))
 
   (testing "can be used with reduce"
-    (let [actions [{:type :set-entries
+    (let [actions [{:type "SET_ENTRIES"
                     :entries ["Trainspotting" "28 Days Later"]}
-                   {:type :next}
-                   {:type :vote :entry "Trainspotting"}
-                   {:type :vote :entry "28 Days Later"}
-                   {:type :vote :entry "Trainspotting"}
-                   {:type :next}]
-          final-state (reduce reducer {} actions)])))
+                   {:type "NEXT"}
+                   {:type "VOTE" :entry "Trainspotting"}
+                   {:type "VOTE" :entry "28 Days Later"}
+                   {:type "VOTE" :entry "Trainspotting"}
+                   {:type "NEXT"}]
+          final-state (reduce reducer {} actions)]
+      (is (= {:winner "Trainspotting"}
+             final-state)))))

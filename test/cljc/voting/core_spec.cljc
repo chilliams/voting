@@ -48,21 +48,17 @@
 
   (testing "vote"
     (testing "creates a tally for the voted entry"
-      (let [state {:vote {:pair ["Trainspotting" "28 Days Later"]}
-                   :entries []}
+      (let [state {:pair ["Trainspotting" "28 Days Later"]}
             next-state (voting/vote state "Trainspotting")]
-        (is (= {:vote {:pair ["Trainspotting" "28 Days Later"]
-                       :tally {"Trainspotting" 1}}
-                :entries []}
+        (is (= {:pair ["Trainspotting" "28 Days Later"]
+                :tally {"Trainspotting" 1}}
                next-state))))
     (testing "adds to existing tally for the voted entry"
-      (let [state {:vote {:pair ["Trainspotting" "28 Days Later"]
-                          :tally {"Trainspotting" 3
-                                  "28 Days Later" 2}}
-                   :entries []}
+      (let [state {:pair ["Trainspotting" "28 Days Later"]
+                   :tally {"Trainspotting" 3
+                           "28 Days Later" 2}}
             next-state (voting/vote state "Trainspotting")]
-        (is (=  {:vote {:pair ["Trainspotting" "28 Days Later"]
-                        :tally {"Trainspotting" 4
-                                "28 Days Later" 2}}
-                 :entries []}
+        (is (=  {:pair ["Trainspotting" "28 Days Later"]
+                 :tally {"Trainspotting" 4
+                         "28 Days Later" 2}}
                 next-state))))))

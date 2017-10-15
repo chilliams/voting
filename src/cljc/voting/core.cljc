@@ -1,11 +1,7 @@
-(ns voting.core
-  (:require [voting.reducer :refer [reducer]]))
+(ns voting.core)
 
 (defn set-entries [state entries]
   (assoc state :entries entries))
-
-(defmethod reducer :set-entries [state action]
-  (set-entries state (:entries action)))
 
 (defn get-winners [vote]
   (if-not vote
@@ -27,13 +23,7 @@
       (merge state {:vote {:pair (take 2 entries)}
                     :entries (drop 2 entries)}))))
 
-(defmethod reducer :next [state action]
-  (next-vote state))
-
 (defn vote [state entry]
   (update-in state
-             [:vote :tally entry]
+             [:tally entry]
              (fnil inc 0)))
-
-(defmethod reducer :vote [state action]
-  (vote state (:entry action)))
